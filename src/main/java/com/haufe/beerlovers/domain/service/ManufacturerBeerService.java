@@ -1,15 +1,11 @@
 package com.haufe.beerlovers.domain.service;
 
 import com.haufe.beerlovers.domain.exception.BeerBadRequest;
-import com.haufe.beerlovers.domain.exception.BeerNotFound;
 import com.haufe.beerlovers.domain.model.Beer;
 import com.haufe.beerlovers.domain.model.Manufacturer;
 import com.haufe.beerlovers.domain.model.ManufacturerRepository;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
