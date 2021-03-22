@@ -36,7 +36,7 @@ It's very beginning of Haufe's challenge. Please, read this README to get more i
 - Bonus: Endpoint for uploading beer picture (only supports JPEG and PNG types, not bigger than 5MB) `PATCH /v1/manufacturers/{manufacturerId}/beers/{beerId}/upload`
 
 ## TODO:
-- **unit tests for other possible paths that are left.**
+- **unit tests for other possible paths that are left.** I hope the coverage for controller layer proves my skills in that area. Implementing tests with 100% coverage for the entire application is time-consuming, but important in case of real environment (and hopefully that's enough for this challenge and I deserved a beer ;) )
 - **integration tests**
 - **handle ISE for large files**
 - **move validations to the separated classes**
