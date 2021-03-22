@@ -3,6 +3,7 @@ package com.haufe.beerlovers.controller.rest;
 import com.haufe.beerlovers.config.ApiVersion;
 import com.haufe.beerlovers.controller.rest.dto.CreateBeerDto;
 import com.haufe.beerlovers.controller.rest.dto.UpdateBeerDto;
+import com.haufe.beerlovers.domain.exception.BeerImageBadRequest;
 import com.haufe.beerlovers.domain.exception.BeerNotFound;
 import com.haufe.beerlovers.domain.exception.ManufacturerNotFound;
 import com.haufe.beerlovers.domain.model.Beer;
@@ -10,17 +11,14 @@ import com.haufe.beerlovers.domain.model.Manufacturer;
 import com.haufe.beerlovers.domain.service.ManufacturerBeerService;
 import com.haufe.beerlovers.domain.service.ManufacturerService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 
 import static org.springframework.http.MediaType.*;
+
 
 @RestController
 @RequestMapping(ApiVersion.V1 + "/manufacturers/{manufacturerId}")
@@ -64,11 +62,18 @@ public class ManufacturerBeerResource {
         });
     }
 
-    @PostMapping(value = "/beers/{beerId}/upload", consumes = MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/beers/{beerId}/upload", consumes = MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void addBeerPicture(@PathVariable final String manufacturerId, @PathVariable final String beerId, @RequestParam final MultipartFile image) {
+    public void addBeerPicture(@PathVariable final String manufacturerId, @PathVariable final String beerId, @RequestParam("image") final MultipartFile file) {
+        validateIfImage(file);
         final Manufacturer manufacturer = manufacturerService.getManufacturer(manufacturerId).orElseThrow(ManufacturerNotFound::new);
         final Beer beer = manufacturerBeerService.getBeer(manufacturer, beerId).orElseThrow(BeerNotFound::new);
-        manufacturerBeerService.updateBeerPicture(manufacturer, beer, image);
+        manufacturerBeerService.updateBeerPicture(manufacturer, beer, file);
+    }
+
+    private void validateIfImage(final MultipartFile file) {
+        if (!IMAGE_JPEG_VALUE.equals(file.getContentType()) && !IMAGE_PNG_VALUE.equals(file.getContentType())) {
+            throw new BeerImageBadRequest();
+        }
     }
 }
