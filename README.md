@@ -1,5 +1,5 @@
 # Beer lovers
-It's very beginning of Haufe's challenge. Please, read this README to get more information
+Please, read this README to get more information
 
 ## Prerequisites
 - [Maven](https://maven.apache.org/) at least version 3 installed
